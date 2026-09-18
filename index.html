@@ -3,311 +3,891 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MA dan MTS Al Muhajirin Mandalasari — Sistem Informasi dan Absensi Digital">
-  <meta name="theme-color" content="#0d6efd">
+  <meta name="description" content="Portal resmi MA dan MTS Al Muhajirin Mandalasari — informasi madrasah dan akses Sistem Absensi Digital.">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="application-name" content="MA dan MTS Al Muhajirin Mandalasari">
+
   <title>MA DAN MTS AL MUHAJIRIN MANDALASARI</title>
 
-  <link rel="icon" id="favicon" href="">
+  <!-- Favicon: gunakan logo.png setelah file logo sekolah diupload ke repository -->
+  <link rel="icon" type="image/png" id="favicon" href="logo.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" id="appleIcon" href="logo.png">
 
   <style>
     :root {
-      --primary: #0d6efd;
-      --primary-dark: #084298;
-      --accent: #f4b400;
-      --ink: #14213d;
-      --muted: #667085;
-      --soft: #f5f8fc;
+      --green-900: #064e3b;
+      --green-800: #065f46;
+      --green-700: #047857;
+      --green-600: #059669;
+      --green-500: #10b981;
+      --gold: #d4a72c;
+      --gold-soft: #fff8df;
+      --ink: #10251f;
+      --muted: #61736d;
+      --bg: #f5faf8;
       --white: #ffffff;
-      --border: #e8eef6;
-      --shadow: 0 18px 50px rgba(20, 33, 61, 0.10);
-      --radius: 22px;
+      --line: #e3eee9;
+      --shadow: 0 20px 55px rgba(6, 78, 59, .10);
+      --radius: 24px;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       color: var(--ink);
       background: var(--white);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    body.menu-open { overflow: hidden; }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
-    .container { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    img { max-width: 100%; }
 
+    .container {
+      width: min(1160px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    /* TOPBAR */
     .topbar {
-      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
-      color: rgba(255,255,255,.95);
-      font-size: .88rem;
+      background: linear-gradient(90deg, var(--green-900), var(--green-700));
+      color: rgba(255,255,255,.94);
+      font-size: .84rem;
       padding: 8px 0;
     }
-    .topbar-inner { display:flex; justify-content:space-between; gap:20px; }
 
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .topbar-left,
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* HEADER / NAV */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
-      backdrop-filter: blur(14px);
       background: rgba(255,255,255,.94);
-      border-bottom: 1px solid rgba(232,238,246,.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(227,238,233,.92);
     }
-    .navbar { min-height: 78px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
-    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
-    .brand-logo, .hero-logo {
-      background:#fff;
-      object-fit:contain;
-      border-radius:16px;
-      border:1px solid var(--border);
-      box-shadow: 0 7px 20px rgba(13,110,253,.10);
-    }
-    .brand-logo { width:50px; height:50px; padding:4px; flex:0 0 50px; }
-    .brand-text { min-width:0; }
-    .brand-name { font-weight:900; letter-spacing:.02em; font-size:.98rem; line-height:1.15; }
-    .brand-sub { color:var(--muted); font-size:.76rem; margin-top:3px; }
 
-    .nav-links { display:flex; align-items:center; gap:8px; }
-    .nav-links a { padding:10px 12px; border-radius:10px; color:#3b4a67; font-weight:700; font-size:.94rem; }
-    .nav-links a:hover { background:var(--soft); color:var(--primary-dark); }
+    .navbar {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      position: relative;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo,
+    .hero-logo,
+    .about-logo {
+      object-fit: contain;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 22px rgba(6,78,59,.09);
+    }
+
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      padding: 4px;
+      border-radius: 15px;
+      flex: 0 0 52px;
+    }
+
+    .brand-text { min-width: 0; }
+    .brand-name {
+      font-weight: 900;
+      letter-spacing: .015em;
+      font-size: .98rem;
+      line-height: 1.15;
+    }
+    .brand-sub {
+      color: var(--muted);
+      font-size: .76rem;
+      margin-top: 3px;
+    }
+
+    .nav-wrap { display: flex; align-items: center; gap: 12px; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+
+    .nav-links a {
+      padding: 10px 12px;
+      border-radius: 11px;
+      color: #3b534b;
+      font-weight: 700;
+      font-size: .91rem;
+      transition: .2s ease;
+    }
+
+    .nav-links a:not(.nav-cta):hover {
+      background: #edf8f4;
+      color: var(--green-800);
+    }
+
+    .nav-cta,
+    .btn-primary {
+      color: #fff !important;
+      background: linear-gradient(135deg, var(--green-700), var(--green-900));
+      box-shadow: 0 12px 24px rgba(4,120,87,.20);
+    }
+
     .nav-cta {
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:12px 18px; border-radius:12px; font-weight:800; color:#fff;
-      background:linear-gradient(90deg,var(--primary),var(--primary-dark));
-      box-shadow:0 10px 22px rgba(13,110,253,.22);
+      padding: 11px 16px !important;
+      border-radius: 12px !important;
     }
-    .nav-cta:hover { transform:translateY(-1px); }
 
+    .mobile-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--green-800);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    /* HERO */
     .hero {
-      position:relative;
-      overflow:hidden;
-      padding:86px 0 70px;
+      position: relative;
+      overflow: hidden;
+      padding: 82px 0 74px;
       background:
-        radial-gradient(circle at 82% 18%, rgba(13,110,253,.14), transparent 28%),
-        radial-gradient(circle at 12% 10%, rgba(244,180,0,.10), transparent 24%),
-        linear-gradient(180deg,#f8fbff 0%,#eef5ff 100%);
+        radial-gradient(circle at 82% 12%, rgba(16,185,129,.15), transparent 27%),
+        radial-gradient(circle at 14% 4%, rgba(212,167,44,.13), transparent 22%),
+        linear-gradient(180deg, #fbfffd 0%, #eef9f4 100%);
     }
-    .hero-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:52px; align-items:center; }
-    .eyebrow { display:inline-flex; gap:8px; align-items:center; padding:8px 12px; background:#eaf2ff; color:var(--primary-dark); border-radius:999px; font-weight:800; font-size:.82rem; }
-    .hero h1 { font-size:clamp(2.2rem, 5vw, 4.2rem); line-height:1.05; margin:18px 0; letter-spacing:-.04em; }
-    .hero h1 span { color:var(--primary); }
-    .hero p { color:var(--muted); font-size:1.08rem; max-width:700px; }
-    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+      filter: blur(1px);
+    }
+
+    .hero::before {
+      width: 260px;
+      height: 260px;
+      right: -80px;
+      bottom: -100px;
+      background: rgba(4,120,87,.06);
+    }
+
+    .hero::after {
+      width: 190px;
+      height: 190px;
+      left: -75px;
+      top: 180px;
+      background: rgba(212,167,44,.06);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 54px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.84);
+      border: 1px solid #d9eee5;
+      color: var(--green-800);
+      font-weight: 800;
+      font-size: .8rem;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgba(212,167,44,.12);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.35rem, 5.3vw, 4.3rem);
+      line-height: 1.04;
+      margin: 18px 0 18px;
+      letter-spacing: -.045em;
+      max-width: 800px;
+    }
+
+    .hero h1 span { color: var(--green-700); }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.07rem;
+      max-width: 700px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
     .btn {
-      display:inline-flex; align-items:center; justify-content:center; gap:9px;
-      padding:14px 20px; border-radius:14px; font-weight:850;
-      border:1px solid transparent; transition:.2s ease; cursor:pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 850;
+      transition: .22s ease;
+      cursor: pointer;
     }
-    .btn-primary { color:#fff; background:linear-gradient(90deg,var(--primary),var(--primary-dark)); box-shadow:0 14px 28px rgba(13,110,253,.22); }
-    .btn-secondary { color:var(--primary-dark); background:#fff; border-color:#dce7f6; }
-    .btn:hover { transform:translateY(-2px); }
-    .hero-note { margin-top:18px; color:#7b879c; font-size:.88rem; }
+
+    .btn-secondary {
+      color: var(--green-800);
+      background: #fff;
+      border-color: #d7e8e0;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .hero-note {
+      margin-top: 18px;
+      color: #788a84;
+      font-size: .87rem;
+    }
 
     .hero-card {
-      border:1px solid rgba(255,255,255,.85);
-      background:rgba(255,255,255,.84);
-      box-shadow:var(--shadow);
-      border-radius:28px;
-      padding:30px;
+      border: 1px solid rgba(255,255,255,.9);
+      background: rgba(255,255,255,.87);
+      box-shadow: var(--shadow);
+      border-radius: 30px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
     }
-    .hero-card-top { display:flex; align-items:center; gap:18px; }
-    .hero-logo { width:86px; height:86px; padding:7px; flex:0 0 86px; }
-    .hero-card h3 { margin:0; font-size:1.18rem; }
-    .hero-card small { color:var(--muted); }
-    .mini-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:24px; }
-    .mini-stat { background:#f7faff; border:1px solid #e7eef9; border-radius:18px; padding:16px; }
-    .mini-stat strong { display:block; font-size:1.45rem; color:var(--primary-dark); }
-    .mini-stat span { color:var(--muted); font-size:.83rem; }
 
-    section { padding:84px 0; }
-    .section-head { text-align:center; max-width:760px; margin:0 auto 40px; }
-    .section-head .label { color:var(--primary); font-weight:900; text-transform:uppercase; letter-spacing:.1em; font-size:.76rem; }
-    .section-head h2 { font-size:clamp(1.8rem,3vw,2.7rem); margin:8px 0 12px; letter-spacing:-.03em; }
-    .section-head p { color:var(--muted); margin:0; }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -75px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(16,185,129,.08);
+    }
 
-    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
-    .card { background:#fff; border:1px solid var(--border); border-radius:22px; padding:24px; box-shadow:0 10px 30px rgba(20,33,61,.05); }
+    .hero-card-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-logo {
+      width: 92px;
+      height: 92px;
+      padding: 7px;
+      border-radius: 21px;
+      flex: 0 0 92px;
+    }
+
+    .hero-card h3 { margin: 0; font-size: 1.2rem; }
+    .hero-card small { color: var(--muted); }
+
+    .badge-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 11px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      background: #effaf6;
+      color: var(--green-800);
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: .73rem;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 12px;
+      margin-top: 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mini-stat {
+      background: #f7fcfa;
+      border: 1px solid #e3f0eb;
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .mini-stat strong {
+      display: block;
+      color: var(--green-800);
+      font-size: 1.38rem;
+      line-height: 1.2;
+    }
+
+    .mini-stat span { color: var(--muted); font-size: .8rem; }
+
+    /* SECTIONS */
+    section { padding: 82px 0; }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 40px;
+    }
+
+    .section-head .label {
+      color: var(--green-700);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: .74rem;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.9rem, 3.3vw, 2.75rem);
+      margin: 8px 0 12px;
+      letter-spacing: -.03em;
+      line-height: 1.14;
+    }
+
+    .section-head p { margin: 0; color: var(--muted); }
+
+    /* SERVICES */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(6,78,59,.045);
+      transition: .22s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 42px rgba(6,78,59,.09);
+      border-color: #cfe6dc;
+    }
+
     .icon {
-      width:48px; height:48px; border-radius:14px; display:grid; place-items:center;
-      color:#fff; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); font-weight:900; font-size:1.25rem;
-      margin-bottom:16px;
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--green-600), var(--green-900));
+      font-weight: 900;
+      font-size: 1.22rem;
+      margin-bottom: 17px;
     }
-    .card h3 { margin:0 0 8px; font-size:1.05rem; }
-    .card p { margin:0; color:var(--muted); font-size:.92rem; }
 
-    .about { background:var(--soft); }
-    .about-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:36px; align-items:center; }
-    .about-box { background:#fff; border:1px solid var(--border); border-radius:26px; padding:32px; box-shadow:var(--shadow); }
-    .about-list { display:grid; gap:12px; margin-top:22px; }
-    .about-list div { display:flex; gap:12px; align-items:flex-start; color:#43506a; }
-    .check { width:24px; height:24px; border-radius:8px; background:#eaf2ff; color:var(--primary); display:grid; place-items:center; font-weight:900; flex:0 0 24px; }
+    .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); font-size: .91rem; }
 
-    .cta { padding:64px 0; }
-    .cta-box { background:linear-gradient(110deg,var(--primary-dark),var(--primary)); color:#fff; border-radius:28px; padding:42px; display:flex; justify-content:space-between; gap:30px; align-items:center; box-shadow:0 22px 50px rgba(13,110,253,.24); }
-    .cta-box h2 { margin:0 0 10px; font-size:clamp(1.7rem,3vw,2.35rem); }
-    .cta-box p { margin:0; color:rgba(255,255,255,.85); max-width:650px; }
-    .cta .btn { background:#fff; color:var(--primary-dark); }
+    /* ABOUT */
+    .about { background: var(--bg); }
 
-    footer { background:#0e1b33; color:#dfe7f5; padding:34px 0; }
-    .footer-grid { display:grid; grid-template-columns:1.4fr .8fr .8fr; gap:30px; }
-    .footer-title { font-weight:900; color:#fff; margin-bottom:8px; }
-    .footer-text { color:#a9b7cf; font-size:.9rem; }
-    .footer-links { display:grid; gap:7px; color:#cbd7e9; font-size:.9rem; }
-    .copyright { border-top:1px solid rgba(255,255,255,.1); margin-top:28px; padding-top:18px; color:#91a1bb; font-size:.82rem; display:flex; justify-content:space-between; gap:20px; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: .88fr 1.12fr;
+      gap: 38px;
+      align-items: stretch;
+    }
 
-    .mobile-toggle { display:none; border:0; background:transparent; font-size:1.55rem; color:var(--ink); cursor:pointer; }
-    .toast { position:fixed; right:18px; bottom:18px; background:#13213a; color:#fff; padding:13px 16px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.2); display:none; z-index:100; }
+    .about-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
 
+    .about-logo {
+      width: 105px;
+      height: 105px;
+      padding: 8px;
+      border-radius: 23px;
+      margin-bottom: 20px;
+    }
+
+    .about-kicker {
+      color: var(--green-700);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: .74rem;
+    }
+
+    .about-box h3 {
+      margin: 9px 0 12px;
+      font-size: 1.6rem;
+      line-height: 1.2;
+    }
+
+    .about-box p { color: var(--muted); margin: 0; }
+
+    .about-content h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem,3.4vw,2.6rem);
+      line-height: 1.12;
+      letter-spacing: -.035em;
+    }
+
+    .about-content > p { color: var(--muted); margin: 0; }
+
+    .about-list {
+      display: grid;
+      gap: 13px;
+      margin-top: 23px;
+    }
+
+    .about-list div {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #435b52;
+    }
+
+    .check {
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: #e7f7f1;
+      color: var(--green-700);
+      font-weight: 900;
+      flex: 0 0 25px;
+    }
+
+    /* JENJANG */
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 18px;
+    }
+
+    .level-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 26px;
+      background: linear-gradient(180deg,#fff,#f8fcfa);
+    }
+
+    .level-card small {
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: .72rem;
+      font-weight: 900;
+      color: var(--green-700);
+      margin-bottom: 6px;
+    }
+
+    .level-card h3 { margin: 0 0 8px; font-size: 1.45rem; }
+    .level-card p { margin: 0; color: var(--muted); }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .pill {
+      background: #eef8f4;
+      color: var(--green-800);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    /* CTA */
+    .cta { padding: 68px 0 84px; }
+
+    .cta-box {
+      background:
+        radial-gradient(circle at 88% 12%, rgba(255,255,255,.12), transparent 28%),
+        linear-gradient(115deg, var(--green-900), var(--green-700));
+      color: #fff;
+      border-radius: 30px;
+      padding: 44px;
+      display: flex;
+      justify-content: space-between;
+      gap: 28px;
+      align-items: center;
+      box-shadow: 0 24px 55px rgba(6,78,59,.24);
+    }
+
+    .cta-box h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.75rem, 3vw, 2.45rem);
+      line-height: 1.15;
+    }
+
+    .cta-box p {
+      margin: 0;
+      color: rgba(255,255,255,.84);
+      max-width: 680px;
+    }
+
+    .cta .btn {
+      background: #fff;
+      color: var(--green-900);
+      border-color: transparent;
+      flex: 0 0 auto;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #092a21;
+      color: #dcebe5;
+      padding: 38px 0 24px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr .8fr .8fr;
+      gap: 32px;
+    }
+
+    .footer-title { color: #fff; font-weight: 900; margin-bottom: 9px; }
+    .footer-text { color: #a9c0b7; font-size: .88rem; }
+    .footer-links { display: grid; gap: 7px; color: #bfd2ca; font-size: .89rem; }
+    .footer-links a:hover { color: #fff; }
+
+    .copyright {
+      border-top: 1px solid rgba(255,255,255,.09);
+      margin-top: 28px;
+      padding-top: 18px;
+      color: #8eaaa0;
+      font-size: .8rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      background: #102c25;
+      color: #fff;
+      padding: 13px 16px;
+      border-radius: 13px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.22);
+      display: none;
+      z-index: 100;
+      font-size: .9rem;
+    }
+
+    /* ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
     @media (max-width: 980px) {
-      .hero-grid,.about-grid { grid-template-columns:1fr; }
-      .cards { grid-template-columns:repeat(2,1fr); }
-      .footer-grid { grid-template-columns:1fr 1fr; }
+      .hero-grid,
+      .about-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 34px; }
+      .cards { grid-template-columns: repeat(2,1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .cta-box { flex-direction: column; align-items: flex-start; }
     }
+
     @media (max-width: 740px) {
-      .topbar { display:none; }
-      .navbar { min-height:70px; }
-      .mobile-toggle { display:block; }
-      .nav-links { display:none; position:absolute; left:18px; right:18px; top:76px; background:#fff; border:1px solid var(--border); border-radius:16px; padding:10px; box-shadow:var(--shadow); flex-direction:column; align-items:stretch; }
-      .nav-links.open { display:flex; }
-      .nav-links a,.nav-cta { width:100%; text-align:center; }
-      .brand-sub { display:none; }
-      .hero { padding:58px 0 44px; }
-      section { padding:62px 0; }
-      .cards { grid-template-columns:1fr; }
-      .cta-box { flex-direction:column; align-items:flex-start; padding:30px; }
-      .footer-grid { grid-template-columns:1fr; }
-      .copyright { flex-direction:column; }
-      .hero-card { padding:22px; }
+      .container { width: min(100% - 24px, 1160px); }
+      .topbar { display: none; }
+      .navbar { min-height: 70px; }
+      .mobile-toggle { display: inline-grid; place-items: center; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 76px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 10px;
+        box-shadow: var(--shadow);
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-links.open { display: flex; }
+      .nav-links a { width: 100%; text-align: center; }
+      .brand-sub { display: none; }
+      .brand-name { font-size: .9rem; }
+      .hero { padding: 58px 0 50px; }
+      section { padding: 63px 0; }
+      .hero h1 { font-size: clamp(2.25rem, 12vw, 3.2rem); }
+      .hero p { font-size: .99rem; }
+      .cards { grid-template-columns: 1fr; }
+      .level-grid { grid-template-columns: 1fr; }
+      .cta { padding: 52px 0 64px; }
+      .cta-box { padding: 30px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 22px; }
+      .copyright { flex-direction: column; }
+      .hero-card { padding: 23px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
+
   <div class="topbar">
     <div class="container topbar-inner">
-      <span>MA DAN MTS AL MUHAJIRIN MANDALASARI</span>
-      <span>Tahun Pelajaran 2026/2027</span>
+      <div class="topbar-left"><span>●</span><span>Portal Digital Madrasah</span></div>
+      <div class="topbar-right"><span>Tahun Pelajaran 2026/2027</span></div>
     </div>
   </div>
 
   <header>
     <div class="container navbar">
-      <a href="#beranda" class="brand" aria-label="Beranda">
-        <img class="brand-logo school-logo" src="" alt="Logo MA dan MTS Al Muhajirin">
+      <a href="#beranda" class="brand" aria-label="Beranda MA dan MTS Al Muhajirin Mandalasari">
+        <img class="brand-logo school-logo" src="logo.png" alt="Logo MA dan MTS Al Muhajirin Mandalasari">
         <div class="brand-text">
           <div class="brand-name">MA DAN MTS AL MUHAJIRIN</div>
-          <div class="brand-sub">Mandalasari · Sistem Informasi Madrasah</div>
+          <div class="brand-sub">Mandalasari · Portal Informasi Madrasah</div>
         </div>
       </a>
 
-      <button class="mobile-toggle" aria-label="Buka menu" onclick="toggleMenu()">☰</button>
+      <div class="nav-wrap">
+        <nav class="nav-links" id="navLinks" aria-label="Navigasi utama">
+          <a href="#beranda" onclick="closeMenu()">Beranda</a>
+          <a href="#tentang" onclick="closeMenu()">Tentang</a>
+          <a href="#layanan" onclick="closeMenu()">Layanan</a>
+          <a href="#jenjang" onclick="closeMenu()">Jenjang</a>
+          <a class="nav-cta" href="javascript:void(0)" onclick="openAttendance()">Masuk Absensi</a>
+        </nav>
 
-      <nav class="nav-links" id="navLinks">
-        <a href="#beranda" onclick="closeMenu()">Beranda</a>
-        <a href="#tentang" onclick="closeMenu()">Tentang</a>
-        <a href="#fitur" onclick="closeMenu()">Fitur</a>
-        <a href="#kontak" onclick="closeMenu()">Kontak</a>
-        <a class="nav-cta" href="javascript:void(0)" onclick="openAttendance()">Masuk Absensi</a>
-      </nav>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Buka menu" aria-expanded="false" onclick="toggleMenu()">☰</button>
+      </div>
     </div>
   </header>
 
   <main>
+    <!-- HERO -->
     <section class="hero" id="beranda">
       <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">● Sistem Informasi Madrasah Digital</div>
-          <h1>MA dan MTS <span>Al Muhajirin</span> Mandalasari</h1>
+        <div class="reveal">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Sistem Informasi Madrasah Digital</div>
+          <h1>Selamat Datang di <span>Al Muhajirin</span> Mandalasari</h1>
           <p>
-            Portal informasi madrasah dengan akses cepat menuju sistem absensi digital guru dan siswa.
-            Sederhana, responsif, dan siap digunakan dari komputer maupun ponsel.
+            Portal digital MA dan MTS Al Muhajirin Mandalasari untuk informasi madrasah dan akses cepat menuju Sistem Absensi Digital.
           </p>
+
           <div class="hero-actions">
             <a class="btn btn-primary" href="javascript:void(0)" onclick="openAttendance()">Masuk Sistem Absensi →</a>
-            <a class="btn btn-secondary" href="#fitur">Lihat Fitur</a>
+            <a class="btn btn-secondary" href="#layanan">Jelajahi Layanan</a>
           </div>
-          <div class="hero-note">Terhubung dengan Google Apps Script dan Google Sheets.</div>
+
+          <div class="hero-note">Satu portal untuk akses yang lebih mudah melalui komputer, tablet, maupun ponsel.</div>
         </div>
 
-        <div class="hero-card">
+        <div class="hero-card reveal">
           <div class="hero-card-top">
-            <img class="hero-logo school-logo" src="" alt="Logo sekolah">
+            <img class="hero-logo school-logo" src="logo.png" alt="Logo MA dan MTS Al Muhajirin Mandalasari">
             <div>
-              <h3>Portal Digital Al Muhajirin</h3>
-              <small>MA &amp; MTS · Mandalasari</small>
+              <h3>MA DAN MTS AL MUHAJIRIN</h3>
+              <small>MANDALASARI</small>
+              <div class="badge-line">
+                <span class="badge">MTs</span>
+                <span class="badge">MA</span>
+                <span class="badge">2026/2027</span>
+              </div>
             </div>
           </div>
+
           <div class="mini-stats">
-            <div class="mini-stat"><strong>VII–IX</strong><span>Kelas MTs</span></div>
-            <div class="mini-stat"><strong>X–XII</strong><span>Kelas MA</span></div>
-            <div class="mini-stat"><strong>2026/27</strong><span>Tahun Pelajaran</span></div>
-            <div class="mini-stat"><strong>24/7</strong><span>Akses Website</span></div>
+            <div class="mini-stat"><strong>VII–IX</strong><span>Jenjang MTs</span></div>
+            <div class="mini-stat"><strong>X–XII</strong><span>Jenjang MA</span></div>
+            <div class="mini-stat"><strong>Digital</strong><span>Sistem Absensi</span></div>
+            <div class="mini-stat"><strong>Responsif</strong><span>HP & Komputer</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="fitur">
+    <!-- TENTANG -->
+    <section id="tentang">
+      <div class="container about-grid">
+        <div class="about-box reveal">
+          <img class="about-logo school-logo" src="logo.png" alt="Logo MA dan MTS Al Muhajirin Mandalasari">
+          <div class="about-kicker">Tentang Portal</div>
+          <h3>Portal digital untuk kebutuhan madrasah</h3>
+          <p>
+            Website ini menjadi halaman depan yang rapi dan mudah diakses, sementara sistem absensi tetap berjalan pada aplikasi Google Apps Script yang terhubung dengan Google Sheets.
+          </p>
+        </div>
+
+        <div class="about-content reveal">
+          <h2>Lebih sederhana untuk diakses, lebih mudah untuk dikembangkan.</h2>
+          <p>
+            Portal ini dirancang sebagai pintu masuk utama sehingga warga madrasah dapat menemukan informasi dan membuka sistem absensi dari satu tempat.
+          </p>
+
+          <div class="about-list">
+            <div><span class="check">✓</span><span>Website ringan dan dapat dibuka melalui perangkat desktop maupun ponsel.</span></div>
+            <div><span class="check">✓</span><span>Sistem absensi tetap menggunakan Google Apps Script dan Google Sheets yang sudah Anda bangun.</span></div>
+            <div><span class="check">✓</span><span>Struktur dapat dikembangkan menjadi profil madrasah, pengumuman, berita, dan dokumentasi kegiatan.</span></div>
+            <div><span class="check">✓</span><span>Logo sekolah digunakan sebagai identitas utama sekaligus favicon browser.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAYANAN -->
+    <section id="layanan">
       <div class="container">
-        <div class="section-head">
-          <div class="label">Fitur utama</div>
-          <h2>Satu pintu untuk kebutuhan absensi madrasah</h2>
-          <p>Website depan ini menjadi portal resmi, sedangkan seluruh proses pencatatan tetap dijalankan oleh aplikasi Apps Script Anda.</p>
+        <div class="section-head reveal">
+          <div class="label">Layanan</div>
+          <h2>Satu pintu menuju layanan digital madrasah</h2>
+          <p>Portal depan ini menempatkan sistem yang paling sering digunakan dalam jangkauan yang jelas dan sederhana.</p>
         </div>
 
         <div class="cards">
-          <article class="card">
+          <article class="card reveal">
             <div class="icon">A</div>
             <h3>Absensi Guru</h3>
-            <p>Pencatatan kehadiran guru berdasarkan jadwal mengajar dan jam pelajaran.</p>
+            <p>Pencatatan kehadiran guru berdasarkan jadwal, kelas, jam pelajaran, dan status kehadiran.</p>
           </article>
-          <article class="card">
+          <article class="card reveal">
             <div class="icon">S</div>
             <h3>Absensi Siswa</h3>
             <p>Pengelolaan kehadiran siswa per jenjang, kelas, tanggal, dan sesi pembelajaran.</p>
           </article>
-          <article class="card">
+          <article class="card reveal">
             <div class="icon">R</div>
-            <h3>Rekap &amp; Riwayat</h3>
-            <p>Data rekap dapat ditampilkan melalui sistem yang sudah Anda bangun di Apps Script.</p>
+            <h3>Rekap & Riwayat</h3>
+            <p>Pemantauan rekap kehadiran serta riwayat kegiatan melalui sistem absensi yang sudah tersedia.</p>
           </article>
-          <article class="card">
+          <article class="card reveal">
             <div class="icon">J</div>
-            <h3>Jadwal &amp; KBM</h3>
-            <p>Terhubung dengan jadwal guru, mata pelajaran, dan riwayat kegiatan belajar mengajar.</p>
+            <h3>Jadwal & KBM</h3>
+            <p>Informasi jadwal guru, mata pelajaran, dan riwayat kegiatan belajar mengajar.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="about" id="tentang">
-      <div class="container about-grid">
-        <div class="about-box">
-          <img class="hero-logo school-logo" src="" alt="Logo MA dan MTS Al Muhajirin" style="width:96px;height:96px;margin-bottom:18px;">
-          <div class="section-head" style="text-align:left;margin:0;">
-            <div class="label">Tentang portal</div>
-            <h2 style="margin-bottom:10px;">Portal resmi berbasis web</h2>
-            <p>Halaman depan dibuat terpisah dari mesin absensi agar tampil lebih profesional dan mudah dikembangkan.</p>
-          </div>
+    <!-- JENJANG -->
+    <section id="jenjang" class="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="label">Jenjang Madrasah</div>
+          <h2>MA dan MTs dalam satu portal</h2>
+          <p>Struktur portal mengikuti jenjang yang sudah digunakan dalam aplikasi absensi Anda.</p>
         </div>
 
-        <div>
-          <h2 style="font-size:clamp(1.8rem,3vw,2.55rem);margin:0 0 12px;">Dibuat untuk kebutuhan MA dan MTS Al Muhajirin Mandalasari</h2>
-          <p style="color:var(--muted);">Struktur website ini sengaja ringan. Tidak memindahkan database, login, atau logika absensi ke tempat lain. Portal hanya menjadi pintu masuk yang rapi menuju sistem Anda.</p>
-          <div class="about-list">
-            <div><span class="check">✓</span><span>Frontend gratis dan dapat di-host di GitHub Pages.</span></div>
-            <div><span class="check">✓</span><span>Mesin absensi tetap berada di Google Apps Script + Google Sheets.</span></div>
-            <div><span class="check">✓</span><span>Bisa dibuka melalui HP, tablet, maupun komputer.</span></div>
-            <div><span class="check">✓</span><span>Bisa dikembangkan menjadi profil madrasah lengkap di kemudian hari.</span></div>
+        <div class="level-grid">
+          <div class="level-card reveal">
+            <small>Madrasah Tsanawiyah</small>
+            <h3>MTs Al Muhajirin</h3>
+            <p>Jenjang kelas untuk MTs.</p>
+            <div class="pill-row">
+              <span class="pill">Kelas VII</span>
+              <span class="pill">Kelas VIII</span>
+              <span class="pill">Kelas IX</span>
+            </div>
+          </div>
+
+          <div class="level-card reveal">
+            <small>Madrasah Aliyah</small>
+            <h3>MA Al Muhajirin</h3>
+            <p>Jenjang kelas untuk MA.</p>
+            <div class="pill-row">
+              <span class="pill">Kelas X</span>
+              <span class="pill">Kelas XI</span>
+              <span class="pill">Kelas XII</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- CTA -->
     <section class="cta" id="kontak">
       <div class="container">
-        <div class="cta-box">
+        <div class="cta-box reveal">
           <div>
-            <h2>Siap masuk ke sistem absensi?</h2>
-            <p>Klik tombol di samping untuk membuka aplikasi absensi MA DAN MTS AL MUHAJIRIN MANDALASARI yang sudah Anda bangun di Google Apps Script.</p>
+            <h2>Masuk ke Sistem Absensi Digital</h2>
+            <p>
+              Gunakan tombol berikut untuk membuka aplikasi absensi MA DAN MTS AL MUHAJIRIN MANDALASARI yang terhubung dengan Google Apps Script.
+            </p>
           </div>
           <a class="btn" href="javascript:void(0)" onclick="openAttendance()">BUKA SISTEM ABSENSI →</a>
         </div>
@@ -319,23 +899,29 @@
     <div class="container footer-grid">
       <div>
         <div class="footer-title">MA DAN MTS AL MUHAJIRIN MANDALASARI</div>
-        <div class="footer-text">Portal informasi dan pintu masuk Sistem Absensi Digital Tahun Pelajaran 2026/2027.</div>
+        <div class="footer-text">Portal digital madrasah dan pintu masuk Sistem Absensi Digital Tahun Pelajaran 2026/2027.</div>
       </div>
+
       <div>
         <div class="footer-title">Navigasi</div>
         <div class="footer-links">
           <a href="#beranda">Beranda</a>
           <a href="#tentang">Tentang</a>
-          <a href="#fitur">Fitur</a>
-          <a href="javascript:void(0)" onclick="openAttendance()">Masuk Absensi</a>
+          <a href="#layanan">Layanan</a>
+          <a href="#jenjang">Jenjang</a>
         </div>
       </div>
+
       <div>
-        <div class="footer-title">Jenjang</div>
-        <div class="footer-text">MTs Kelas VII, VIII, IX</div>
-        <div class="footer-text">MA Kelas X, XI, XII</div>
+        <div class="footer-title">Sistem</div>
+        <div class="footer-links">
+          <a href="javascript:void(0)" onclick="openAttendance()">Masuk Absensi</a>
+          <span>MTs VII, VIII, IX</span>
+          <span>MA X, XI, XII</span>
+        </div>
       </div>
     </div>
+
     <div class="container copyright">
       <span>© 2026 MA DAN MTS AL MUHAJIRIN MANDALASARI</span>
       <span>Project by Ahmad Janwari</span>
@@ -346,10 +932,10 @@
 
   <script>
     // =========================================================
-    // KONFIGURASI — TIDAK PERLU DIUBAH KECUALI URL APPS SCRIPT
+    // KONFIGURASI
     // =========================================================
     const ATTENDANCE_URL = 'https://script.google.com/macros/s/AKfycbxFllAbB_P3miM2nccH5aMR-Uk4Caipzzf-Vnk2ohspOkvXjX9411AtBrOnWdrL8j0Lzg/exec';
-    const LOGO_URL = 'https://drive.google.com/uc?export=view&id=1526t4mGV3TPwCa4viyFYPOqdnAGJcoVz';
+    const LOGO_FALLBACK_URL = 'https://drive.google.com/uc?export=view&id=1526t4mGV3TPwCa4viyFYPOqdnAGJcoVz';
 
     function openAttendance() {
       const toast = document.getElementById('toast');
@@ -360,27 +946,68 @@
     }
 
     function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('open');
+      const nav = document.getElementById('navLinks');
+      const btn = document.getElementById('mobileToggle');
+      const isOpen = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(isOpen));
+      document.body.classList.toggle('menu-open', isOpen);
     }
 
     function closeMenu() {
-      document.getElementById('navLinks').classList.remove('open');
+      const nav = document.getElementById('navLinks');
+      const btn = document.getElementById('mobileToggle');
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
     }
 
     function applyLogo() {
       const images = document.querySelectorAll('.school-logo');
+      const favicon = document.getElementById('favicon');
+      const appleIcon = document.getElementById('appleIcon');
+
       images.forEach(img => {
-        img.src = LOGO_URL;
-        img.onerror = () => {
-          img.removeAttribute('src');
-          img.alt = 'Logo Al Muhajirin';
-          img.style.objectFit = 'contain';
+        img.src = 'logo.png';
+        img.onerror = function () {
+          if (this.dataset.fallbackApplied === '1') return;
+          this.dataset.fallbackApplied = '1';
+          this.src = LOGO_FALLBACK_URL;
         };
       });
-      document.getElementById('favicon').href = LOGO_URL;
+
+      // Gunakan logo lokal sebagai favicon bila tersedia.
+      favicon.href = 'logo.png';
+      appleIcon.href = 'logo.png';
     }
 
+    function setupReveal() {
+      const items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        items.forEach(el => el.classList.add('show'));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      items.forEach(el => observer.observe(el));
+    }
+
+    document.addEventListener('click', event => {
+      const nav = document.getElementById('navLinks');
+      const toggle = document.getElementById('mobileToggle');
+      if (!nav.classList.contains('open')) return;
+      if (!nav.contains(event.target) && event.target !== toggle) closeMenu();
+    });
+
     applyLogo();
+    setupReveal();
   </script>
 </body>
 </html>
