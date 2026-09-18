@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MA dan MTS Al Muhajirin Mandalasari — Sistem Informasi dan Absensi Digital">
+  <meta name="theme-color" content="#0d6efd">
+  <title>MA DAN MTS AL MUHAJIRIN MANDALASARI</title>
+
+  <link rel="icon" id="favicon" href="">
+
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --primary-dark: #084298;
+      --accent: #f4b400;
+      --ink: #14213d;
+      --muted: #667085;
+      --soft: #f5f8fc;
+      --white: #ffffff;
+      --border: #e8eef6;
+      --shadow: 0 18px 50px rgba(20, 33, 61, 0.10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--white);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .container { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+
+    .topbar {
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      color: rgba(255,255,255,.95);
+      font-size: .88rem;
+      padding: 8px 0;
+    }
+    .topbar-inner { display:flex; justify-content:space-between; gap:20px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid rgba(232,238,246,.9);
+    }
+    .navbar { min-height: 78px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .brand-logo, .hero-logo {
+      background:#fff;
+      object-fit:contain;
+      border-radius:16px;
+      border:1px solid var(--border);
+      box-shadow: 0 7px 20px rgba(13,110,253,.10);
+    }
+    .brand-logo { width:50px; height:50px; padding:4px; flex:0 0 50px; }
+    .brand-text { min-width:0; }
+    .brand-name { font-weight:900; letter-spacing:.02em; font-size:.98rem; line-height:1.15; }
+    .brand-sub { color:var(--muted); font-size:.76rem; margin-top:3px; }
+
+    .nav-links { display:flex; align-items:center; gap:8px; }
+    .nav-links a { padding:10px 12px; border-radius:10px; color:#3b4a67; font-weight:700; font-size:.94rem; }
+    .nav-links a:hover { background:var(--soft); color:var(--primary-dark); }
+    .nav-cta {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 18px; border-radius:12px; font-weight:800; color:#fff;
+      background:linear-gradient(90deg,var(--primary),var(--primary-dark));
+      box-shadow:0 10px 22px rgba(13,110,253,.22);
+    }
+    .nav-cta:hover { transform:translateY(-1px); }
+
+    .hero {
+      position:relative;
+      overflow:hidden;
+      padding:86px 0 70px;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(13,110,253,.14), transparent 28%),
+        radial-gradient(circle at 12% 10%, rgba(244,180,0,.10), transparent 24%),
+        linear-gradient(180deg,#f8fbff 0%,#eef5ff 100%);
+    }
+    .hero-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:52px; align-items:center; }
+    .eyebrow { display:inline-flex; gap:8px; align-items:center; padding:8px 12px; background:#eaf2ff; color:var(--primary-dark); border-radius:999px; font-weight:800; font-size:.82rem; }
+    .hero h1 { font-size:clamp(2.2rem, 5vw, 4.2rem); line-height:1.05; margin:18px 0; letter-spacing:-.04em; }
+    .hero h1 span { color:var(--primary); }
+    .hero p { color:var(--muted); font-size:1.08rem; max-width:700px; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:9px;
+      padding:14px 20px; border-radius:14px; font-weight:850;
+      border:1px solid transparent; transition:.2s ease; cursor:pointer;
+    }
+    .btn-primary { color:#fff; background:linear-gradient(90deg,var(--primary),var(--primary-dark)); box-shadow:0 14px 28px rgba(13,110,253,.22); }
+    .btn-secondary { color:var(--primary-dark); background:#fff; border-color:#dce7f6; }
+    .btn:hover { transform:translateY(-2px); }
+    .hero-note { margin-top:18px; color:#7b879c; font-size:.88rem; }
+
+    .hero-card {
+      border:1px solid rgba(255,255,255,.85);
+      background:rgba(255,255,255,.84);
+      box-shadow:var(--shadow);
+      border-radius:28px;
+      padding:30px;
+    }
+    .hero-card-top { display:flex; align-items:center; gap:18px; }
+    .hero-logo { width:86px; height:86px; padding:7px; flex:0 0 86px; }
+    .hero-card h3 { margin:0; font-size:1.18rem; }
+    .hero-card small { color:var(--muted); }
+    .mini-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:24px; }
+    .mini-stat { background:#f7faff; border:1px solid #e7eef9; border-radius:18px; padding:16px; }
+    .mini-stat strong { display:block; font-size:1.45rem; color:var(--primary-dark); }
+    .mini-stat span { color:var(--muted); font-size:.83rem; }
+
+    section { padding:84px 0; }
+    .section-head { text-align:center; max-width:760px; margin:0 auto 40px; }
+    .section-head .label { color:var(--primary); font-weight:900; text-transform:uppercase; letter-spacing:.1em; font-size:.76rem; }
+    .section-head h2 { font-size:clamp(1.8rem,3vw,2.7rem); margin:8px 0 12px; letter-spacing:-.03em; }
+    .section-head p { color:var(--muted); margin:0; }
+
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+    .card { background:#fff; border:1px solid var(--border); border-radius:22px; padding:24px; box-shadow:0 10px 30px rgba(20,33,61,.05); }
+    .icon {
+      width:48px; height:48px; border-radius:14px; display:grid; place-items:center;
+      color:#fff; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); font-weight:900; font-size:1.25rem;
+      margin-bottom:16px;
+    }
+    .card h3 { margin:0 0 8px; font-size:1.05rem; }
+    .card p { margin:0; color:var(--muted); font-size:.92rem; }
+
+    .about { background:var(--soft); }
+    .about-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:36px; align-items:center; }
+    .about-box { background:#fff; border:1px solid var(--border); border-radius:26px; padding:32px; box-shadow:var(--shadow); }
+    .about-list { display:grid; gap:12px; margin-top:22px; }
+    .about-list div { display:flex; gap:12px; align-items:flex-start; color:#43506a; }
+    .check { width:24px; height:24px; border-radius:8px; background:#eaf2ff; color:var(--primary); display:grid; place-items:center; font-weight:900; flex:0 0 24px; }
+
+    .cta { padding:64px 0; }
+    .cta-box { background:linear-gradient(110deg,var(--primary-dark),var(--primary)); color:#fff; border-radius:28px; padding:42px; display:flex; justify-content:space-between; gap:30px; align-items:center; box-shadow:0 22px 50px rgba(13,110,253,.24); }
+    .cta-box h2 { margin:0 0 10px; font-size:clamp(1.7rem,3vw,2.35rem); }
+    .cta-box p { margin:0; color:rgba(255,255,255,.85); max-width:650px; }
+    .cta .btn { background:#fff; color:var(--primary-dark); }
+
+    footer { background:#0e1b33; color:#dfe7f5; padding:34px 0; }
+    .footer-grid { display:grid; grid-template-columns:1.4fr .8fr .8fr; gap:30px; }
+    .footer-title { font-weight:900; color:#fff; margin-bottom:8px; }
+    .footer-text { color:#a9b7cf; font-size:.9rem; }
+    .footer-links { display:grid; gap:7px; color:#cbd7e9; font-size:.9rem; }
+    .copyright { border-top:1px solid rgba(255,255,255,.1); margin-top:28px; padding-top:18px; color:#91a1bb; font-size:.82rem; display:flex; justify-content:space-between; gap:20px; }
+
+    .mobile-toggle { display:none; border:0; background:transparent; font-size:1.55rem; color:var(--ink); cursor:pointer; }
+    .toast { position:fixed; right:18px; bottom:18px; background:#13213a; color:#fff; padding:13px 16px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.2); display:none; z-index:100; }
+
+    @media (max-width: 980px) {
+      .hero-grid,.about-grid { grid-template-columns:1fr; }
+      .cards { grid-template-columns:repeat(2,1fr); }
+      .footer-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width: 740px) {
+      .topbar { display:none; }
+      .navbar { min-height:70px; }
+      .mobile-toggle { display:block; }
+      .nav-links { display:none; position:absolute; left:18px; right:18px; top:76px; background:#fff; border:1px solid var(--border); border-radius:16px; padding:10px; box-shadow:var(--shadow); flex-direction:column; align-items:stretch; }
+      .nav-links.open { display:flex; }
+      .nav-links a,.nav-cta { width:100%; text-align:center; }
+      .brand-sub { display:none; }
+      .hero { padding:58px 0 44px; }
+      section { padding:62px 0; }
+      .cards { grid-template-columns:1fr; }
+      .cta-box { flex-direction:column; align-items:flex-start; padding:30px; }
+      .footer-grid { grid-template-columns:1fr; }
+      .copyright { flex-direction:column; }
+      .hero-card { padding:22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>MA DAN MTS AL MUHAJIRIN MANDALASARI</span>
+      <span>Tahun Pelajaran 2026/2027</span>
+    </div>
+  </div>
+
+  <header>
+    <div class="container navbar">
+      <a href="#beranda" class="brand" aria-label="Beranda">
+        <img class="brand-logo school-logo" src="" alt="Logo MA dan MTS Al Muhajirin">
+        <div class="brand-text">
+          <div class="brand-name">MA DAN MTS AL MUHAJIRIN</div>
+          <div class="brand-sub">Mandalasari · Sistem Informasi Madrasah</div>
+        </div>
+      </a>
+
+      <button class="mobile-toggle" aria-label="Buka menu" onclick="toggleMenu()">☰</button>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#beranda" onclick="closeMenu()">Beranda</a>
+        <a href="#tentang" onclick="closeMenu()">Tentang</a>
+        <a href="#fitur" onclick="closeMenu()">Fitur</a>
+        <a href="#kontak" onclick="closeMenu()">Kontak</a>
+        <a class="nav-cta" href="javascript:void(0)" onclick="openAttendance()">Masuk Absensi</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="beranda">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">● Sistem Informasi Madrasah Digital</div>
+          <h1>MA dan MTS <span>Al Muhajirin</span> Mandalasari</h1>
+          <p>
+            Portal informasi madrasah dengan akses cepat menuju sistem absensi digital guru dan siswa.
+            Sederhana, responsif, dan siap digunakan dari komputer maupun ponsel.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="openAttendance()">Masuk Sistem Absensi →</a>
+            <a class="btn btn-secondary" href="#fitur">Lihat Fitur</a>
+          </div>
+          <div class="hero-note">Terhubung dengan Google Apps Script dan Google Sheets.</div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-card-top">
+            <img class="hero-logo school-logo" src="" alt="Logo sekolah">
+            <div>
+              <h3>Portal Digital Al Muhajirin</h3>
+              <small>MA &amp; MTS · Mandalasari</small>
+            </div>
+          </div>
+          <div class="mini-stats">
+            <div class="mini-stat"><strong>VII–IX</strong><span>Kelas MTs</span></div>
+            <div class="mini-stat"><strong>X–XII</strong><span>Kelas MA</span></div>
+            <div class="mini-stat"><strong>2026/27</strong><span>Tahun Pelajaran</span></div>
+            <div class="mini-stat"><strong>24/7</strong><span>Akses Website</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fitur">
+      <div class="container">
+        <div class="section-head">
+          <div class="label">Fitur utama</div>
+          <h2>Satu pintu untuk kebutuhan absensi madrasah</h2>
+          <p>Website depan ini menjadi portal resmi, sedangkan seluruh proses pencatatan tetap dijalankan oleh aplikasi Apps Script Anda.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="icon">A</div>
+            <h3>Absensi Guru</h3>
+            <p>Pencatatan kehadiran guru berdasarkan jadwal mengajar dan jam pelajaran.</p>
+          </article>
+          <article class="card">
+            <div class="icon">S</div>
+            <h3>Absensi Siswa</h3>
+            <p>Pengelolaan kehadiran siswa per jenjang, kelas, tanggal, dan sesi pembelajaran.</p>
+          </article>
+          <article class="card">
+            <div class="icon">R</div>
+            <h3>Rekap &amp; Riwayat</h3>
+            <p>Data rekap dapat ditampilkan melalui sistem yang sudah Anda bangun di Apps Script.</p>
+          </article>
+          <article class="card">
+            <div class="icon">J</div>
+            <h3>Jadwal &amp; KBM</h3>
+            <p>Terhubung dengan jadwal guru, mata pelajaran, dan riwayat kegiatan belajar mengajar.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="tentang">
+      <div class="container about-grid">
+        <div class="about-box">
+          <img class="hero-logo school-logo" src="" alt="Logo MA dan MTS Al Muhajirin" style="width:96px;height:96px;margin-bottom:18px;">
+          <div class="section-head" style="text-align:left;margin:0;">
+            <div class="label">Tentang portal</div>
+            <h2 style="margin-bottom:10px;">Portal resmi berbasis web</h2>
+            <p>Halaman depan dibuat terpisah dari mesin absensi agar tampil lebih profesional dan mudah dikembangkan.</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 style="font-size:clamp(1.8rem,3vw,2.55rem);margin:0 0 12px;">Dibuat untuk kebutuhan MA dan MTS Al Muhajirin Mandalasari</h2>
+          <p style="color:var(--muted);">Struktur website ini sengaja ringan. Tidak memindahkan database, login, atau logika absensi ke tempat lain. Portal hanya menjadi pintu masuk yang rapi menuju sistem Anda.</p>
+          <div class="about-list">
+            <div><span class="check">✓</span><span>Frontend gratis dan dapat di-host di GitHub Pages.</span></div>
+            <div><span class="check">✓</span><span>Mesin absensi tetap berada di Google Apps Script + Google Sheets.</span></div>
+            <div><span class="check">✓</span><span>Bisa dibuka melalui HP, tablet, maupun komputer.</span></div>
+            <div><span class="check">✓</span><span>Bisa dikembangkan menjadi profil madrasah lengkap di kemudian hari.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="kontak">
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <h2>Siap masuk ke sistem absensi?</h2>
+            <p>Klik tombol di samping untuk membuka aplikasi absensi MA DAN MTS AL MUHAJIRIN MANDALASARI yang sudah Anda bangun di Google Apps Script.</p>
+          </div>
+          <a class="btn" href="javascript:void(0)" onclick="openAttendance()">BUKA SISTEM ABSENSI →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-title">MA DAN MTS AL MUHAJIRIN MANDALASARI</div>
+        <div class="footer-text">Portal informasi dan pintu masuk Sistem Absensi Digital Tahun Pelajaran 2026/2027.</div>
+      </div>
+      <div>
+        <div class="footer-title">Navigasi</div>
+        <div class="footer-links">
+          <a href="#beranda">Beranda</a>
+          <a href="#tentang">Tentang</a>
+          <a href="#fitur">Fitur</a>
+          <a href="javascript:void(0)" onclick="openAttendance()">Masuk Absensi</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-title">Jenjang</div>
+        <div class="footer-text">MTs Kelas VII, VIII, IX</div>
+        <div class="footer-text">MA Kelas X, XI, XII</div>
+      </div>
+    </div>
+    <div class="container copyright">
+      <span>© 2026 MA DAN MTS AL MUHAJIRIN MANDALASARI</span>
+      <span>Project by Ahmad Janwari</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Membuka sistem absensi…</div>
+
+  <script>
+    // =========================================================
+    // KONFIGURASI — TIDAK PERLU DIUBAH KECUALI URL APPS SCRIPT
+    // =========================================================
+    const ATTENDANCE_URL = 'https://script.google.com/macros/s/AKfycbxFllAbB_P3miM2nccH5aMR-Uk4Caipzzf-Vnk2ohspOkvXjX9411AtBrOnWdrL8j0Lzg/exec';
+    const LOGO_URL = 'https://drive.google.com/uc?export=view&id=1526t4mGV3TPwCa4viyFYPOqdnAGJcoVz';
+
+    function openAttendance() {
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => {
+        window.location.href = ATTENDANCE_URL;
+      }, 180);
+    }
+
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    function closeMenu() {
+      document.getElementById('navLinks').classList.remove('open');
+    }
+
+    function applyLogo() {
+      const images = document.querySelectorAll('.school-logo');
+      images.forEach(img => {
+        img.src = LOGO_URL;
+        img.onerror = () => {
+          img.removeAttribute('src');
+          img.alt = 'Logo Al Muhajirin';
+          img.style.objectFit = 'contain';
+        };
+      });
+      document.getElementById('favicon').href = LOGO_URL;
+    }
+
+    applyLogo();
+  </script>
+</body>
+</html>
